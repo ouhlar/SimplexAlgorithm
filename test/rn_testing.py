@@ -39,6 +39,28 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(str(RationalNumber(-3, -9)), "1/3")
         self.assertEqual(str(RationalNumber(157092776646, 366549812174)), "3/7")
 
+    def test_is_equal(self):
+        self.assertEqual(RationalNumber(3, 9) == RationalNumber(1, 3), True)
+        self.assertEqual(RationalNumber(-3, 9) == RationalNumber(1, 3), False)
+        self.assertEqual(RationalNumber(3, -9) == RationalNumber(1, 3), False)
+        self.assertEqual(RationalNumber(-3, -9) == RationalNumber(1, 3), True)
+
+    def test_greater_then(self):
+        self.assertEqual(RationalNumber(1, 2) > RationalNumber(1, 9), True)
+        self.assertEqual(RationalNumber(-1, 2) > RationalNumber(1, 9), False)
+        self.assertEqual(RationalNumber(1, 2) > RationalNumber(-1, 9), True)
+        self.assertEqual(RationalNumber(-1, -2) > RationalNumber(1, 9), True)
+        self.assertEqual(RationalNumber(1, 2) > RationalNumber(-1, -9), True)
+        self.assertEqual(RationalNumber(-1, 2) > RationalNumber(-1, 9), False)
+
+    def test_greater_then_or_equal(self):
+        self.assertEqual(RationalNumber(1, 2) >= RationalNumber(1, 9), True)
+        self.assertEqual(RationalNumber(1, 2) >= RationalNumber(1, 2), True)
+        self.assertEqual(RationalNumber(-1, 2) >= RationalNumber(-1, 9), False)
+        self.assertEqual(RationalNumber(-1, 2) >= RationalNumber(-1, 2), True)
+        self.assertEqual(RationalNumber(1, 2) >= RationalNumber(-1, -2), True)
+        self.assertEqual(RationalNumber(-1, -2) >= RationalNumber(-1, -2), True)
+
 
 if __name__ == '__main__':
     unittest.main()
