@@ -19,7 +19,7 @@ class RationalNumber:
             self._numerator, self._denominator = self._reduce(abs(numerator), abs(denominator))
 
     def __str__(self) -> str:
-        return (self._minus and '-' or ' ') + str(self._numerator) + "/" + str(self._denominator)
+        return (self._minus and '-' or '') + str(self._numerator) + "/" + str(self._denominator)
 
     def _gcd(self, n: int, d: int) -> int:
         if n == 0:
