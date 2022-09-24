@@ -102,8 +102,11 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(-1, 9) / (-2), RationalNumber(1, 18))
     
     def test_power(self):
-        self.assertEqual(RationalNumber(1, 9) ** 2, RationalNumber(1, 81))
-        self.assertEqual(RationalNumber(1, 9) ** -2, RationalNumber(81, 1))
+        self.assertEqual(RationalNumber(1, 3) ** 2, RationalNumber(1, 9))
+        self.assertEqual(RationalNumber(-1, 3) ** 2, RationalNumber(1, 9))
+        self.assertEqual(RationalNumber(1, 3) ** -2, RationalNumber(9, 1))
+        self.assertEqual(RationalNumber(-1, 3) ** -2, RationalNumber(9, 1))
+        self.assertEqual(RationalNumber(-1, 3) ** 3, RationalNumber(-1, 27))
 
 
 if __name__ == '__main__':
