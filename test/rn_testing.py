@@ -61,6 +61,12 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(1, 2) >= RationalNumber(-1, -2), True)
         self.assertEqual(RationalNumber(-1, -2) >= RationalNumber(-1, -2), True)
 
+    def test_addition(self):
+        self.assertEqual(RationalNumber(1, 9) + RationalNumber(1, 2), RationalNumber(11, 18))
+        self.assertEqual(RationalNumber(-1, 9) + RationalNumber(1, 2), RationalNumber(7, 18))
+        self.assertEqual(RationalNumber(1, 9) + RationalNumber(-1, 2), RationalNumber(-7, 18))
+        self.assertEqual(RationalNumber(-1, 9) + RationalNumber(-1, 2), RationalNumber(-11, 18))
+
 
 if __name__ == '__main__':
     unittest.main()
