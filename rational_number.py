@@ -19,6 +19,9 @@ class RationalNumber:
 
     def __str__(self) -> str:
         return "{}/{}".format(str(self._numerator), str(self._denominator))
+    
+    def __repr__(self) -> str:
+        return "{}/{}".format(str(self._numerator), str(self._denominator))
 
     def _gcd(self, n: int, d: int) -> int:
         if n == 0:
