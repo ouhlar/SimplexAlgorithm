@@ -1,7 +1,5 @@
 import unittest
-
 from rational_number import RationalNumber
-
 
 class TestRationalNumber(unittest.TestCase):
     def test_basics(self):
