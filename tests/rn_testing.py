@@ -69,6 +69,10 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(-1, 9) + 2, RationalNumber(17, 9))
         self.assertEqual(RationalNumber(1, 9) + (-2), RationalNumber(-17, 9))
         self.assertEqual(RationalNumber(-1, 9) + (-2), RationalNumber(-19, 9))
+        self.assertEqual(2 + RationalNumber(1, 9), RationalNumber(19, 9))
+        self.assertEqual(2 + RationalNumber(-1, 9), RationalNumber(17, 9))
+        self.assertEqual((-2) + RationalNumber(1, 9), RationalNumber(-17, 9))
+        self.assertEqual((-2) + RationalNumber(-1, 9), RationalNumber(-19, 9))
 
     def test_multiplication(self):
         self.assertEqual(RationalNumber(1, 9) * RationalNumber(1, 2), RationalNumber(1, 18))
@@ -79,6 +83,10 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(-1, 9) * 2, RationalNumber(-2, 9))
         self.assertEqual(RationalNumber(1, 9) * (-2), RationalNumber(-2, 9))
         self.assertEqual(RationalNumber(-1, 9) * (-2), RationalNumber(2, 9))
+        self.assertEqual(2 * RationalNumber(1, 9), RationalNumber(2, 9))
+        self.assertEqual(2 * RationalNumber(-1, 9), RationalNumber(-2, 9))
+        self.assertEqual((-2) * RationalNumber(1, 9), RationalNumber(-2, 9))
+        self.assertEqual((-2) * RationalNumber(-1, 9), RationalNumber(2, 9))
 
     def test_substraction(self):
         self.assertEqual(RationalNumber(1, 9) - RationalNumber(1, 2), RationalNumber(-7, 18))
@@ -89,6 +97,10 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(-1, 9) - 2, RationalNumber(-19, 9))
         self.assertEqual(RationalNumber(1, 9) - (-2), RationalNumber(19, 9))
         self.assertEqual(RationalNumber(-1, 9) - (-2), RationalNumber(17, 9))
+        self.assertEqual(2 - RationalNumber(1, 9), RationalNumber(17, 9))
+        self.assertEqual(2 - RationalNumber(-1, 9), RationalNumber(19, 9))
+        self.assertEqual((-2) - RationalNumber(1, 9), RationalNumber(-19, 9))
+        self.assertEqual((-2) - RationalNumber(-1, 9), RationalNumber(-17, 9))
     
     def test_division(self):
         self.assertEqual(RationalNumber(1, 9) / RationalNumber(1, 2), RationalNumber(2, 9))
