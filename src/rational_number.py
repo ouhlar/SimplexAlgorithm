@@ -59,6 +59,9 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_denominator() + new_rn.get_numerator() * self._denominator
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
+    
+    def __radd__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return self.__add__(rn)
 
     def __mul__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
@@ -68,6 +71,9 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_numerator()
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
+    
+    def __rmul__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return self.__mul__(rn)
 
     def __sub__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
@@ -75,6 +81,9 @@ class RationalNumber:
         else:
             new_rn: RationalNumber = (-rn)
         return self + new_rn
+    
+    def __rsub__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return -self.__sub__(rn)
 
     def __truediv__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
