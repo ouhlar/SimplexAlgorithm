@@ -1,5 +1,5 @@
-import email
-from setuptools import setup, find_packages
+from setuptools import setup
+
 
 setup(
     name="LinOpt",
@@ -15,4 +15,4 @@ setup(
         "Topic :: Scientific/Engineering :: Mathematics",
         "Topic :: Education"
     ]
-)    
+)
