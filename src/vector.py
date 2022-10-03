@@ -4,7 +4,7 @@ from rational_number import RationalNumber
 
 
 class Vector:
-    def __init__(self, values: Tuple[RationalNumber, ...]) -> None:
+    def __init__(self, *values: Union[RationalNumber, "Vector"]) -> None:
         self.vector = values
 
     def __len__(self):
@@ -13,7 +13,7 @@ class Vector:
     # Dot products
     def __mul__(self, other: Union[int, RationalNumber, "Vector"]) -> Union[RationalNumber, "Vector"]:
         if isinstance(other, Union[int, RationalNumber]):
-            return Vector(tuple(i * other for i in self))
+            return Vector(*(i * other for i in self))
         if isinstance(other, Vector):
             return sum(a * b for a, b in zip(self, other))
         else:
@@ -25,15 +25,14 @@ class Vector:
     def __add__(self, other: "Vector") -> "Vector":
         if isinstance(other, Vector):
             if len(self) == len(other):
-                return Vector(tuple(a + b for a, b in zip(self, other)))
+                return Vector(*(a + b for a, b in zip(self, other)))
         else:
             raise TypeError("Wrong type of values for addition")
     
     def __sub__(self, other: "Vector") -> "Vector":
         if isinstance(other, Vector):
             if len(self) == len(other):
-                result: Vector = Vector(tuple(a - b for a, b in zip(self, other)))
-                return result
+                return Vector(*(a - b for a, b in zip(self, other)))
         else:
             raise TypeError("Wrong type of values for substraction")
     
@@ -41,15 +40,15 @@ class Vector:
         if other == 0:
             raise ZeroDivisionError("Division by 0")
         if isinstance(other, Union[int, RationalNumber]):
-            return Vector(tuple(i / other for i in self))
+            return Vector(*(i / other for i in self))
         else:
             raise TypeError("Wrong type of values for division")
 
-    def __iter__(self):
-        return self.vector.__iter__()
-    
-    def __getitem__(self, key) -> Union["Vector", RationalNumber]:
-        return self.vector[key]
+    def __eq__(self, other: "Vector") -> bool:
+        return self.vector == other.vector
+
+    def __getitem__(self, item) -> Union["Vector", RationalNumber]:
+        return self.vector[item]
 
     def __repr__(self) -> str:
         return str(self.vector)
