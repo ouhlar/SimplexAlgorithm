@@ -19,11 +19,16 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(str(V_NEG - V_POS), "(-2/3, -3/1, -8/7)")
         self.assertEqual(str(V_NEG - V_NEG), "(0/1, 0/1, 0/1)")
     
+    # Dot product
     def test_multiplication(self):
         self.assertEqual(str(V_POS * 8), "(8/3, 12/1, 32/7)")
         self.assertEqual(str(8 * V_POS), "(8/3, 12/1, 32/7)")
         self.assertEqual(str(V_NEG * 8), "(-8/3, -12/1, -32/7)")
         self.assertEqual(str(8 * V_NEG), "(-8/3, -12/1, -32/7)")
+        self.assertEqual(str(V_POS * V_POS), "4741/1764")
+        self.assertEqual(str(V_POS * V_NEG), "-4741/1764")
+        self.assertEqual(str(V_NEG * V_POS), "-4741/1764")
+        self.assertEqual(str(V_NEG * V_NEG), "4741/1764")
     
     def test_division(self):
         self.assertEqual(str(V_POS / 8), "(1/24, 3/16, 1/14)")
