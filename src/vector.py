@@ -10,9 +10,12 @@ class Vector:
     def __len__(self):
         return len(self.vector)
     
-    def __mul__(self, other: Union[int, RationalNumber]) -> "Vector":
+    # Dot products
+    def __mul__(self, other: Union[int, RationalNumber, "Vector"]) -> Union[RationalNumber, "Vector"]:
         if isinstance(other, Union[int, RationalNumber]):
             return Vector(tuple(i * other for i in self))
+        if isinstance(other, Vector):
+            return sum(a * b for a, b in zip(self, other))
         else:
             raise TypeError("Wrong type of values for multiplication")
     
@@ -41,15 +44,15 @@ class Vector:
             return Vector(tuple(i / other for i in self))
         else:
             raise TypeError("Wrong type of values for division")
-    
+
     def __iter__(self):
         return self.vector.__iter__()
     
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> Union["Vector", RationalNumber]:
         return self.vector[key]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self.vector)
     
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.vector)

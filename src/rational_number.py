@@ -8,8 +8,8 @@ class RationalNumber:
         if denominator == 0:
             raise ZeroDivisionError("Denominator cannot be 0")
         if numerator == 0:
-            self._numerator = 0
-            self._denominator = 1
+            self._numerator: int = 0
+            self._denominator: int = 1
         else:
             if (numerator < 0 and denominator > 0) or (numerator >= 0 and denominator < 0):
                 minus: int = -1
@@ -32,10 +32,10 @@ class RationalNumber:
         gcd_num: int = self._gcd(numerator, denominator)
         return (numerator // gcd_num * minus), (denominator // gcd_num)
 
-    def get_numerator(self):
+    def get_numerator(self) -> int:
         return self._numerator
 
-    def get_denominator(self):
+    def get_denominator(self) -> int:
         return self._denominator
 
     def __eq__(self, rn: "RationalNumber") -> bool:
@@ -48,7 +48,7 @@ class RationalNumber:
     def __ge__(self, rn: "RationalNumber") -> bool:
         return not self < rn
 
-    def __neg__(self):
+    def __neg__(self) -> "RationalNumber":
         return RationalNumber(self._numerator * (-1), self._denominator)
 
     def __add__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
