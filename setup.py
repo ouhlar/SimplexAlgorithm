@@ -8,7 +8,7 @@ setup(
     author="Oliver Uhlar",
     author_email="ouhlar@studen.umb.sk",
     url="https://github.com/duchzjety/LinOpt",
-    py_modules=['rational_number'],
+    py_modules=['rational_number', 'vector', 'matrix'],
     package_dir={'': 'src'},
     classifiers=[
         "Programming Language :: Python :: 3.10",

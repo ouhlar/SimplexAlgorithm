@@ -8,8 +8,8 @@ class RationalNumber:
         if denominator == 0:
             raise ZeroDivisionError("Denominator cannot be 0")
         if numerator == 0:
-            self._numerator = 0
-            self._denominator = 1
+            self._numerator: int = 0
+            self._denominator: int = 1
         else:
             if (numerator < 0 and denominator > 0) or (numerator >= 0 and denominator < 0):
                 minus: int = -1
@@ -32,10 +32,10 @@ class RationalNumber:
         gcd_num: int = self._gcd(numerator, denominator)
         return (numerator // gcd_num * minus), (denominator // gcd_num)
 
-    def get_numerator(self):
+    def get_numerator(self) -> int:
         return self._numerator
 
-    def get_denominator(self):
+    def get_denominator(self) -> int:
         return self._denominator
 
     def __eq__(self, rn: "RationalNumber") -> bool:
@@ -48,7 +48,7 @@ class RationalNumber:
     def __ge__(self, rn: "RationalNumber") -> bool:
         return not self < rn
 
-    def __neg__(self):
+    def __neg__(self) -> "RationalNumber":
         return RationalNumber(self._numerator * (-1), self._denominator)
 
     def __add__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
@@ -59,6 +59,9 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_denominator() + new_rn.get_numerator() * self._denominator
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
+    
+    def __radd__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return self.__add__(rn)
 
     def __mul__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
@@ -68,6 +71,9 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_numerator()
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
+    
+    def __rmul__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return self.__mul__(rn)
 
     def __sub__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
@@ -75,6 +81,9 @@ class RationalNumber:
         else:
             new_rn: RationalNumber = (-rn)
         return self + new_rn
+    
+    def __rsub__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
+        return -self.__sub__(rn)
 
     def __truediv__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         if isinstance(rn, int):
