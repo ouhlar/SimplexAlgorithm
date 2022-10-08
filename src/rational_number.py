@@ -38,15 +38,21 @@ class RationalNumber:
     def get_denominator(self) -> int:
         return self._denominator
 
-    def __eq__(self, rn: "RationalNumber") -> bool:
-        return self.__dict__ == rn.__dict__
+    def __eq__(self, rn: Union["RationalNumber", int]) -> bool:
+        if isinstance(rn, RationalNumber):
+            return self.__dict__ == rn.__dict__
+        return self.__eq__(RationalNumber(rn, 1))
 
-    def __gt__(self, rn: "RationalNumber") -> bool:
-        return self._numerator * rn.get_denominator() > \
-            rn.get_numerator() * self.get_denominator()
+    def __gt__(self, rn: Union["RationalNumber", int]) -> bool:
+        if isinstance(rn, RationalNumber):
+            return self._numerator * rn.get_denominator() > \
+                rn.get_numerator() * self.get_denominator()
+        return self.__gt__(RationalNumber(rn, 1))
 
-    def __ge__(self, rn: "RationalNumber") -> bool:
-        return not self < rn
+    def __ge__(self, rn: Union["RationalNumber", int]) -> bool:
+        if isinstance(rn, RationalNumber):
+            return not self < rn
+        return self.__ge__(RationalNumber(rn, 1))
 
     def __neg__(self) -> "RationalNumber":
         return RationalNumber(self._numerator * (-1), self._denominator)

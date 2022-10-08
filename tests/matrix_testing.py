@@ -30,8 +30,8 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(len(M2_POS), 3)
     
     def test_dimension(self):
-        self.assertEqual(M1_POS.m_dimension(), (1,3))
-        self.assertEqual(M2_POS.m_dimension(), (3,1))
+        self.assertEqual(M1_POS.m_dimension(), (1, 3))
+        self.assertEqual(M2_POS.m_dimension(), (3, 1))
     
     def test_get_item(self):
         self.assertEqual(str(M1_POS[0][1]), "3/2")
@@ -61,8 +61,27 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(str(M1_POS * M2_NEG), "[[-4741/1764]]")
         self.assertRaises(ValueError, Matrix.__mul__, M1_POS, M1_POS)
         self.assertEqual(str(M1_POS * 5), "[[5/3  15/2  20/7]]")
-        self.assertEqual(str(M1_POS * RationalNumber(1,2)), "[[1/6  3/4  2/7]]")
+        self.assertEqual(str(M1_POS * RationalNumber(1, 2)), "[[1/6  3/4  2/7]]")
         self.assertEqual(str(M2_POS * V_POS), "[[1/9  1/2  4/21]\n [1/2  9/4  6/7]\n [4/21  6/7  16/49]]")
+    
+    def test_swap_rows(self):
+        m: Matrix = Matrix(
+                    Vector(RationalNumber(1, 1), RationalNumber(1, 2), RationalNumber(1, 3)),
+                    Vector(RationalNumber(5, 1), RationalNumber(5, 2), RationalNumber(5, 3)),
+                    Vector(RationalNumber(7, 1), RationalNumber(7, 2), RationalNumber(7, 3))
+                )
+        self.assertEqual(str(m.swap_rows(0, 1)), "[[5/1  5/2  5/3]\n [1/1  1/2  1/3]\n [7/1  7/2  7/3]]")
+        self.assertRaises(ValueError, m.swap_rows, 0, 6)
+    
+    def test_swap_cols(self):
+        m: Matrix = Matrix(
+                    Vector(RationalNumber(1, 1), RationalNumber(1, 2), RationalNumber(1, 3)),
+                    Vector(RationalNumber(5, 1), RationalNumber(5, 2), RationalNumber(5, 3)),
+                    Vector(RationalNumber(7, 1), RationalNumber(7, 2), RationalNumber(7, 3))
+                )
+        self.assertEqual(str(m.swap_cols(0, 1)), "[[1/2  1/1  1/3]\n [5/2  5/1  5/3]\n [7/2  7/1  7/3]]")
+        self.assertRaises(ValueError, m.swap_rows, 0, 6)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

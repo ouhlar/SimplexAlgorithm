@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 
 from rational_number import RationalNumber
 
@@ -38,7 +38,7 @@ class Vector:
     def __truediv__(self, other: Union[int, RationalNumber]) -> "Vector":
         if isinstance(other, Union[int, RationalNumber]):
             if isinstance(other, int):
-                other: RationalNumber = RationalNumber(other,1)
+                other: RationalNumber = RationalNumber(other, 1)
             return Vector(*(i / other for i in self.vector))
         else:
             raise TypeError("Wrong type of values for division")
@@ -46,9 +46,14 @@ class Vector:
     def __eq__(self, other: "Vector") -> bool:
         return self.vector == other.vector
 
-    def __getitem__(self, item) -> Union["Vector", RationalNumber]:
-        return self.vector[item]
+    def __getitem__(self, place_num: int) -> Union["Vector", RationalNumber]:
+        return self.vector[place_num]
     
+    def __setitem__(self, place_num: int, item: Union[RationalNumber, "Vector"]) -> None:
+        list_vector: List[Union[RationalNumber, "Vector"]] = list(self.vector)
+        list_vector[place_num] = item
+        self.vector = tuple(list_vector)
+     
     def __iter__(self):
         return self.vector.__iter__()
 
