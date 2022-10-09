@@ -94,7 +94,7 @@ class Matrix:
                         return
             if i != r:
                 self.swap_rows(i, r)
-            self[r] = self[r] / self[r][pivot] # without this step it will give us echelon form
+            self[r] = self[r] / self[r][pivot] # without this step it will give us row echelon form
             for j in range(rows):
                 if j != r:
                     ratio: RationalNumber = self[j][pivot]
