@@ -82,6 +82,15 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(str(m.swap_cols(0, 1)), "[[1/2  1/1  1/3]\n [5/2  5/1  5/3]\n [7/2  7/1  7/3]]")
         self.assertRaises(ValueError, m.swap_rows, 0, 6)
 
+    def test_gauss_jordan(self):
+        m: Matrix = Matrix(
+                    Vector(RationalNumber(1, 1), RationalNumber(3, 1), RationalNumber(8, 1), RationalNumber(4, 1)),
+                    Vector(RationalNumber(8, 1), RationalNumber(1, 1), RationalNumber(5, 1), RationalNumber(3, 1)),
+                    Vector(RationalNumber(3, 1), RationalNumber(9, 1), RationalNumber(1, 1), RationalNumber(2, 1))
+                )
+        m.gauss_jordan()
+        self.assertEqual(str(m), "[[1/1  0/1  0/1  45/529]\n [0/1  1/1  0/1  77/529]\n [0/1  0/1  1/1  10/23]]")
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
