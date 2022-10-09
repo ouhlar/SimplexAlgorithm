@@ -1,3 +1,4 @@
+import json
 from typing import Optional, Tuple, Union
 from rational_number import RationalNumber
 from vector import Vector
@@ -6,6 +7,11 @@ from vector import Vector
 class Matrix:
     def __init__(self, *values: Vector) -> None:
         self.matrix = Vector(*values)
+    
+    @classmethod
+    def from_json_file(cls, filename):
+        with open(filename) as json_file:
+            return cls(*json.load(json_file))
 
     def __getitem__(self, item) -> Vector:
         return self.matrix[item]
@@ -86,12 +92,12 @@ class Matrix:
                     pivot += 1
                     if cols == pivot:
                         return
-            self.swap_rows(i, r)
+            if i != r:
+                self.swap_rows(i, r)
             self[r] = self[r] / self[r][pivot]
             for j in range(rows):
                 if j != r:
-                    self[j] = self[j] - self[r] * self[j][pivot]
+                    ratio: RationalNumber = self[j][pivot]
+                    if ratio != 0:
+                        self[j] = self[j] - self[r] * ratio
             pivot += 1
-    
-    def gauss(self) -> None:
-        pass
