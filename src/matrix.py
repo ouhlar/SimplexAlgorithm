@@ -5,7 +5,7 @@ from vector import Vector
 
 
 class Matrix:
-    def __init__(self, *values: Union[Vector, object]) -> None:
+    def __init__(self, *values: Vector) -> None:
         self.matrix = Vector(*values)
     
     @classmethod
@@ -99,5 +99,5 @@ class Matrix:
                 if j != r:
                     ratio: RationalNumber = self[j][pivot]
                     if ratio != 0:
-                        self[j] = self[j] - self[r] * self[j][pivot]
+                        self[j] = self[j] - self[r] * ratio
             pivot += 1
