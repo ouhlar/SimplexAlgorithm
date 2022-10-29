@@ -91,6 +91,9 @@ class TestMatrix(unittest.TestCase):
         m.gauss_jordan()
         self.assertEqual(str(m), "[[1/1  0/1  0/1  45/529]\n [0/1  1/1  0/1  77/529]\n [0/1  0/1  1/1  10/23]]")
 
+    def test_json_matrix_load(self):
+        m = Matrix.from_json_file('./tests/sample.json')
+        self.assertEqual(str(m), "[[1/2  2/3  3/2]\n [1/7  2/7  3/7]\n [1/5  2/5  1/2]]")
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

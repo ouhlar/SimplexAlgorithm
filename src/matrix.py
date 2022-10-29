@@ -9,9 +9,13 @@ class Matrix:
         self.matrix = Vector(*values)
     
     @classmethod
-    def from_json_file(cls, filename):
+    def from_json_file(self, filename):
         with open(filename) as json_file:
-            return cls(*json.load(json_file))
+            matrix_data = []
+            data = json.load(json_file)
+            for row in data:
+                matrix_data.append(Vector(*(RationalNumber(x) for x in row)))
+            return Matrix(*matrix_data)
 
     def __getitem__(self, item) -> Vector:
         return self.matrix[item]
