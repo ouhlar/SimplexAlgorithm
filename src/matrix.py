@@ -7,34 +7,34 @@ from vector import Vector
 class Matrix:
     def __init__(self, *values: Vector) -> None:
         self.matrix = Vector(*values)
-    
+
     @classmethod
-    def from_json_file(self, filename):
+    def from_json_file(cls, filename) -> "Matrix":
         with open(filename) as json_file:
             matrix_data = []
             data = json.load(json_file)
             for row in data:
                 matrix_data.append(Vector(*(RationalNumber(x) for x in row)))
-            return Matrix(*matrix_data)
+            return cls(*matrix_data)
 
     def __getitem__(self, item) -> Vector:
         return self.matrix[item]
-    
+
     def __setitem__(self, place_num: int, item: Vector) -> None:
         self.matrix[place_num] = item
 
     def __len__(self) -> int:
         return len(self.matrix)
-    
+
     def __repr__(self) -> str:
         return str(self.matrix)
-    
+
     def __str__(self) -> str:
         return '[' + '\n '.join((map(str, self.matrix))) + ']'
-    
+
     def __iter__(self):
         return self.matrix.__iter__()
-    
+
     def __neg__(self) -> "Matrix":
         return Matrix(*(-v for v in self.matrix))
 
@@ -45,10 +45,10 @@ class Matrix:
         if self.m_dimension() != other.m_dimension():
             raise ValueError("Different dimension of matrices")
         return Matrix(*(a + b for a, b in zip(self.matrix, other.matrix)))
-    
+
     def __sub__(self, other: "Matrix") -> "Matrix":
         return self.__add__(-other)
-    
+
     def __mul__(self, other: Union["Matrix", RationalNumber, int, Vector]) -> "Matrix":
         if isinstance(other, Vector):
             other = Matrix(*(Vector(other)))
@@ -61,12 +61,12 @@ class Matrix:
             return Matrix(*(a * other for a in self.matrix))
         else:
             raise TypeError("wrong type of number for multiplication")
-    
+
     def __truediv__(self, other: Union[RationalNumber, int]) -> "Matrix":
         if not isinstance(other, Union[RationalNumber, int]):
             raise TypeError("wrong type of number for division")
         return Matrix(*(a / other for a in self))
-    
+
     def swap_rows(self, a_row: int, b_row: int) -> Optional["Matrix"]:
         if a_row < 0 or a_row > len(self) or b_row < 0 or b_row > len(self):
             raise ValueError("Index of row is out of range")
@@ -98,7 +98,7 @@ class Matrix:
                         return
             if i != r:
                 self.swap_rows(i, r)
-            self[r] = self[r] / self[r][pivot] # without this step it will give us row echelon form
+            self[r] = self[r] / self[r][pivot]  # without this step it will give us row echelon form
             for j in range(rows):
                 if j != r:
                     ratio: RationalNumber = self[j][pivot]

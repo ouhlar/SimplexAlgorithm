@@ -3,8 +3,6 @@ from typing import Tuple, Union
 
 class RationalNumber:
     def __init__(self, *var: Union[int, str]) -> None:
-        numerator: int = 0
-        denominator: int = 1
         if isinstance(var[0], str):
             numerator, denominator = [int(x) for x in var[0].split('/')]
         else:

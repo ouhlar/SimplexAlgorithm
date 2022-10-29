@@ -95,5 +95,6 @@ class TestMatrix(unittest.TestCase):
         m = Matrix.from_json_file('./tests/sample.json')
         self.assertEqual(str(m), "[[1/2  2/3  3/2]\n [1/7  2/7  3/7]\n [1/5  2/5  1/2]]")
 
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
