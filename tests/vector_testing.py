@@ -1,4 +1,5 @@
 import unittest
+
 from rational_number import RationalNumber
 from vector import Vector
 
@@ -18,7 +19,7 @@ class TestVector(unittest.TestCase):
         self.assertEqual(str(V_POS - V_NEG), "[2/3  3/1  8/7]")
         self.assertEqual(str(V_NEG - V_POS), "[-2/3  -3/1  -8/7]")
         self.assertEqual(str(V_NEG - V_NEG), "[0/1  0/1  0/1]")
-    
+
     # Dot product
     def test_multiplication(self):
         self.assertEqual(str(V_POS * 8), "[8/3  12/1  32/7]")
@@ -29,7 +30,7 @@ class TestVector(unittest.TestCase):
         self.assertEqual(str(V_POS * V_NEG), "-4741/1764")
         self.assertEqual(str(V_NEG * V_POS), "-4741/1764")
         self.assertEqual(str(V_NEG * V_NEG), "4741/1764")
-    
+
     def test_division(self):
         self.assertEqual(str(V_POS / 8), "[1/24  3/16  1/14]")
         self.assertEqual(str(V_NEG / 8), "[-1/24  -3/16  -1/14]")
@@ -44,12 +45,15 @@ class TestVector(unittest.TestCase):
         self.assertEqual(V_POS != V_NEG, True)
         self.assertEqual(V_NEG != V_POS, True)
         self.assertEqual(V_NEG != V_NEG, False)
-    
+
     def test_len(self):
         self.assertEqual(len(V_POS), 3)
-    
+
     def test_get_item(self):
         self.assertEqual(str(V_POS[0]), "1/3")
+
+    def test_append(self):
+        self.assertEqual(str(V_POS + RationalNumber(1, 3)), "[1/3  3/2  4/7  1/3]")
 
 
 if __name__ == '__main__':
