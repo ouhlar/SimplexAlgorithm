@@ -1,5 +1,6 @@
 import json
 from typing import Optional, Tuple, Union
+
 from rational_number import RationalNumber
 from vector import Vector
 
@@ -17,8 +18,12 @@ class Matrix:
                 matrix_data.append(Vector(*(RationalNumber(x) for x in row)))
             return cls(*matrix_data)
 
-    def __getitem__(self, item) -> Vector:
-        return self.matrix[item]
+    def __getitem__(self, item: Union[int, slice]) -> Union[Vector, "Matrix"]:
+        if isinstance(item, slice):
+            indices: range = range(*item.indices(len(self.matrix)))
+            return Matrix(*(self.matrix[i] for i in indices))
+        else:
+            return self.matrix[item]
 
     def __setitem__(self, place_num: int, item: Vector) -> None:
         self.matrix[place_num] = item
@@ -79,6 +84,19 @@ class Matrix:
         for row in self:
             row[a_col], row[b_col] = row[b_col], row[a_col]
         return self
+
+    def add_row(self, row: Vector) -> None:
+        self.matrix = Vector(*self.matrix, row)
+
+    def add_col(self, col: Vector) -> None:
+        for i in range(len(self.matrix)):
+            self.matrix[i] += col[i]
+
+    def get_col(self, col: int) -> Vector:
+        return Vector(*(row[col] for row in self.matrix))
+    
+    def transpose(self) -> "Matrix":
+        return Matrix(*zip(*self.matrix))
 
     def gauss_jordan(self) -> None:
         m_size: Tuple[int, int] = self.m_dimension()

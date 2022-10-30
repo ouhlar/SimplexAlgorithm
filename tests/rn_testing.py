@@ -1,4 +1,5 @@
 import unittest
+
 from rational_number import RationalNumber
 
 
@@ -95,7 +96,7 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(2 - RationalNumber(-1, 9), RationalNumber(19, 9))
         self.assertEqual((-2) - RationalNumber(1, 9), RationalNumber(-19, 9))
         self.assertEqual((-2) - RationalNumber(-1, 9), RationalNumber(-17, 9))
-    
+
     def test_division(self):
         self.assertEqual(RationalNumber(1, 9) / RationalNumber(1, 2), RationalNumber(2, 9))
         self.assertEqual(RationalNumber(-1, 9) / RationalNumber(1, 2), RationalNumber(-2, 9))
@@ -105,7 +106,7 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(RationalNumber(-1, 9) / 2, RationalNumber(-1, 18))
         self.assertEqual(RationalNumber(1, 9) / (-2), RationalNumber(-1, 18))
         self.assertEqual(RationalNumber(-1, 9) / (-2), RationalNumber(1, 18))
-    
+
     def test_power(self):
         self.assertEqual(RationalNumber(1, 3) ** 2, RationalNumber(1, 9))
         self.assertEqual(RationalNumber(-1, 3) ** 2, RationalNumber(1, 9))

@@ -3,8 +3,12 @@ from typing import Tuple, Union
 
 class RationalNumber:
     def __init__(self, *var: Union[int, str]) -> None:
-        if isinstance(var[0], str):
-            numerator, denominator = [int(x) for x in var[0].split('/')]
+        if len(var) == 1:
+            if isinstance(var[0], str):
+                numerator, denominator = [int(x) for x in var[0].split('/')]
+            else:
+                numerator = var[0]
+                denominator = 1
         else:
             numerator, denominator = var
         if denominator == 0:
@@ -21,7 +25,7 @@ class RationalNumber:
 
     def __str__(self) -> str:
         return "{}/{}".format(str(self._numerator), str(self._denominator))
-    
+
     def __repr__(self) -> str:
         return "{}/{}".format(str(self._numerator), str(self._denominator))
 
@@ -48,7 +52,7 @@ class RationalNumber:
     def __gt__(self, rn: Union["RationalNumber", int]) -> bool:
         if isinstance(rn, RationalNumber):
             return self._numerator * rn.get_denominator() > \
-                rn.get_numerator() * self.get_denominator()
+                   rn.get_numerator() * self.get_denominator()
         return self.__gt__(RationalNumber(rn, 1))
 
     def __ge__(self, rn: Union["RationalNumber", int]) -> bool:
@@ -67,7 +71,7 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_denominator() + new_rn.get_numerator() * self._denominator
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
-    
+
     def __radd__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         return self.__add__(rn)
 
@@ -79,7 +83,7 @@ class RationalNumber:
         new_numerator: int = self._numerator * new_rn.get_numerator()
         new_denominator: int = self._denominator * new_rn.get_denominator()
         return RationalNumber(new_numerator, new_denominator)
-    
+
     def __rmul__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         return self.__mul__(rn)
 
@@ -89,7 +93,7 @@ class RationalNumber:
         else:
             new_rn: RationalNumber = (-rn)
         return self + new_rn
-    
+
     def __rsub__(self, rn: Union["RationalNumber", int]) -> "RationalNumber":
         return -self.__sub__(rn)
 
