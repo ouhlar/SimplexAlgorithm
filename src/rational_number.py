@@ -1,11 +1,15 @@
 from typing import Tuple, Union
+import re
 
 
 class RationalNumber:
     def __init__(self, *var: Union[int, str]) -> None:
         if len(var) == 1:
             if isinstance(var[0], str):
-                numerator, denominator = [int(x) for x in var[0].split('/')]
+                r_number: str = var[0].replace('-', '')
+                numerator, denominator = [int(x) for x in r_number.split('/')]
+                if re.match(r"-\d/\d", var[0]):
+                    numerator *= -1
             else:
                 numerator = var[0]
                 denominator = 1
