@@ -48,8 +48,12 @@ class Vector:
     def __eq__(self, other: "Vector") -> bool:
         return self.vector == other.vector
 
-    def __getitem__(self, place_num: int) -> Union["Vector", RationalNumber]:
-        return self.vector[place_num]
+    def __getitem__(self, item: int) -> Union["Vector", RationalNumber]:
+        if isinstance(item, slice):
+            indices: range = range(*item.indices(len(self.vector)))
+            return Vector(*(self.vector[i] for i in indices))
+        else:
+            return self.vector[item]
 
     def __setitem__(self, place_num: int, item: Union[RationalNumber, "Vector"]) -> None:
         list_vector: List[Union[RationalNumber, "Vector"]] = list(self.vector)
@@ -64,3 +68,10 @@ class Vector:
 
     def __str__(self) -> str:
         return '[' + '  '.join((map(str, self.vector))) + ']'
+
+    @staticmethod
+    def create_empty(size: int) -> "Vector":
+        result: Vector = Vector()
+        for i in range(size):
+            result += RationalNumber(0, 1)
+        return result
