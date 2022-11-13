@@ -91,7 +91,13 @@ class Matrix:
     def add_col(self, col: Vector) -> None:
         for i in range(len(self.matrix)):
             self.matrix[i] += col[i]
+    
+    def del_row(self) -> None:
+        self.matrix = self.matrix[:-1]
 
+    def del_col(self) -> None:
+        self.matrix = Vector(*(row[:-1] for row in self.matrix))
+       
     def get_col(self, col: int) -> Vector:
         return Vector(*(row[col] for row in self.matrix))
     
