@@ -46,12 +46,11 @@ class SimplexMethod:
     
     def add_artificial_and_b_col(self, m: Matrix) -> Matrix:
         rows, cols = self.a.m_dimension()
-        first_p_idx: int = cols - self.p  # index of p1
-        w_row: Vector = Vector().create_empty(self.a.m_dimension()[1])
+        w_row: Vector = Vector().create_empty(cols)
         w_in_b_col: RationalNumber = RationalNumber(0)
         added_w_row: bool = False
         for r in range(rows):
-            if sum((self.a[r])[first_p_idx:]) != 1:  # sum of p1, p2, ...pn
+            if sum((self.a[r])[-self.p:]) != 1:  # sum of p1, p2, ...pn
                 self.u += 1
                 if not added_w_row:
                     m.add_row(w_row)
