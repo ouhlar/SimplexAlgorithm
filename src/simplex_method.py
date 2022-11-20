@@ -109,14 +109,14 @@ class SimplexMethod:
 
     @staticmethod
     def pivot_row_index(simplex_table: Matrix, pivot_c_index: int, phase: int) -> int:
-        min_ratio: RationalNumber = RationalNumber(0, 1)
+        min_ratio: Optional[RationalNumber] = None
         min_ratio_idx: Optional[int] = None
         simplex_table_len: int = len(simplex_table) - phase  # without last z or z + w row
         for idx in range(simplex_table_len):
             row_pivot: RationalNumber = simplex_table[idx][pivot_c_index]
             if row_pivot > 0:
                 ratio = simplex_table[idx][-1] / row_pivot
-                if min_ratio == 0:
+                if min_ratio is None:
                     min_ratio = ratio
                     min_ratio_idx = idx
                 elif ratio < min_ratio:
