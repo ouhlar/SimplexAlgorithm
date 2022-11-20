@@ -108,7 +108,18 @@ class SimplexMethod:
                     return idx
 
     @staticmethod
-    def pivot_row_index(simplex_table: Matrix, pivot_c_index: int, phase: int) -> int:
+    def is_lexicographically_greater(x: Vector, y: Vector, pivot: RationalNumber) -> bool:
+        x = x / pivot
+        y = y / pivot
+        cols: int = len(x)
+        for i in range(cols):
+            if x[i] > 0 and y[i] > 0:
+                if x[i] > y[i]:
+                    return True
+                return False
+        return False
+
+    def pivot_row_index(self, simplex_table: Matrix, pivot_c_index: int, phase: int) -> int:
         min_ratio: Optional[RationalNumber] = None
         min_ratio_idx: Optional[int] = None
         simplex_table_len: int = len(simplex_table) - phase  # without last z or z + w row
@@ -119,6 +130,12 @@ class SimplexMethod:
                 if min_ratio is None:
                     min_ratio = ratio
                     min_ratio_idx = idx
+                elif ratio == min_ratio:
+                    if self.is_lexicographically_greater(simplex_table[min_ratio_idx],
+                                                         simplex_table[idx],
+                                                         simplex_table[idx][pivot_c_index]):
+                        min_ratio = ratio
+                        min_ratio_idx = idx
                 elif ratio < min_ratio:
                     min_ratio = ratio
                     min_ratio_idx = idx
