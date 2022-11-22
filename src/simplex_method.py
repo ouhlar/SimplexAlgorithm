@@ -9,7 +9,7 @@ class SimplexMethod:
     def __init__(self, a_matrix: Matrix, b_vector: Vector, z_vector: Vector, p_number: int) -> None:
         self.a: Matrix = a_matrix
         self.b: Vector = b_vector + RationalNumber(0)
-        self.z: Vector = z_vector
+        self.z: Vector = Vector(*z_vector, *(p_number * [RationalNumber(0)]))
         self.p: int = p_number
         self.u: int = 0
 
@@ -107,7 +107,7 @@ class SimplexMethod:
                 if c_vector[idx] == pivot:
                     return idx
 
-    @staticmethod
+    staticmethod
     def is_lexicographically_greater(x: Vector, y: Vector, pivot: RationalNumber) -> bool:
         x = x / pivot
         y = y / pivot
@@ -116,6 +116,8 @@ class SimplexMethod:
             if x[i] > 0 and y[i] > 0:
                 if x[i] > y[i]:
                     return True
+                elif x[i] == y[i]:
+                    continue
                 return False
         return False
 
