@@ -108,9 +108,9 @@ class SimplexMethod:
                     return idx
 
     staticmethod
-    def is_lexicographically_greater(x: Vector, y: Vector, pivot: RationalNumber) -> bool:
-        x = x / pivot
-        y = y / pivot
+    def is_lexicographically_greater(x: Vector, y: Vector, pivot_idx: int) -> bool:
+        x = x / x[pivot_idx]
+        y = y / y[pivot_idx]
         cols: int = len(x)
         for i in range(cols):
             if x[i] > 0 and y[i] > 0:
@@ -135,7 +135,7 @@ class SimplexMethod:
                 elif ratio == min_ratio:
                     if self.is_lexicographically_greater(simplex_table[min_ratio_idx],
                                                          simplex_table[idx],
-                                                         simplex_table[idx][pivot_c_index]):
+                                                         pivot_c_index):
                         min_ratio = ratio
                         min_ratio_idx = idx
                 elif ratio < min_ratio:
