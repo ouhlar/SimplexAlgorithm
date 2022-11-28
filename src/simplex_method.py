@@ -9,7 +9,7 @@ class SimplexMethod:
     def __init__(self, a_matrix: Matrix, b_vector: Vector, z_vector: Vector, p_number: int) -> None:
         self.a: Matrix = a_matrix
         self.b: Vector = b_vector + RationalNumber(0)
-        self.z: Vector = Vector(*z_vector, *(p_number * [RationalNumber(0)]))
+        self.z: Vector = Vector(*z_vector, *(p_number * [RationalNumber(0)])) * (-1)
         self.p: int = p_number
         self.u: int = 0
 
