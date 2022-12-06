@@ -1,4 +1,5 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
+from prettytable import PrettyTable
 
 from matrix import Matrix
 from rational_number import RationalNumber
@@ -107,7 +108,7 @@ class SimplexMethod:
                 if c_vector[idx] == pivot:
                     return idx
 
-    staticmethod
+    @staticmethod
     def is_lexicographically_greater(x: Vector, y: Vector, pivot_idx: int) -> bool:
         x = x / x[pivot_idx]
         y = y / y[pivot_idx]
@@ -159,13 +160,43 @@ class SimplexMethod:
     def get_result(self, simplex_table: Matrix):
         result: Vector = Vector(*(0 for _ in range(simplex_table.m_dimension()[1] - 1)))
         simplex_table_cols: int = simplex_table.m_dimension()[1] - 1  # without last col (b col)
+        base_idx: List[int] = []
         for idx in range(simplex_table_cols):
             idx_base: Optional[int] = self.is_base(simplex_table.get_col(idx))
             if idx_base is not None:
+                base_idx.append(idx)
                 result[idx] = simplex_table[idx_base][-1]
+        self.nice_table(simplex_table, base_idx)
         return result
 
     @staticmethod
     def is_base(col: Vector):
         if sum(col) == 1 and (x in (0, 1) for x in col):
             return [idx for idx in range(len(col) - 1) if col[idx] == 1][0]
+
+    def nice_table(self, simplex_table: Matrix, base_idx: List[int]) -> None:
+        x_header: List[str] = self.nice_header(self.a.m_dimension()[1] - self.p, 'x') 
+        p_header: List[str] = self.nice_header(self.p, 'p')
+        table_header = x_header + p_header + ['b']
+        table = PrettyTable(table_header, title="SIMPLEX METHOD", align='c')
+        table.add_rows(simplex_table)
+        table = self.nice_base(table, base_idx)
+        print(table)
+    
+    @staticmethod
+    def nice_header(num_var: int, symbol: str) -> List[str]:
+        return [symbol + "_" + str(i) for i in range(num_var)]
+
+    @staticmethod
+    def nice_base(table: PrettyTable, base_idx: List[int]) -> PrettyTable:
+        fieldname: str = ''
+        first_col: List[str] = []
+        for i in base_idx:
+            first_col.append(table._field_names[i])
+        first_col.append('z(x)')
+        table._field_names.insert(0, fieldname)
+        table._align[fieldname] = 'c'
+        table._valign[fieldname] = 't'
+        for i in range(len(first_col)): 
+            table._rows[i].insert(0, first_col[i])
+        return table
