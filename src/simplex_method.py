@@ -194,9 +194,9 @@ class SimplexMethod:
             table._rows[i].insert(0, base_col[i])
         
         # format nice result
-        z_line = [str(a) + ' * ' +str(x) for a, x in zip(-self.z ,x_header)]
+        z_line = [str(a) + ' * ' + str(x) for a, x in zip(-self.z, x_header)]
         z_line = ' + '.join(z_line)
-        z_line_values = [str(a) + ' * ' +str(x) for a, x in zip(-self.z ,result[:-self.p])]
+        z_line_values = [str(a) + ' * ' + str(x) for a, x in zip(-self.z, result[:-self.p])]
         z_line_values = ' + '.join(z_line_values)
         print(table)
         print()
@@ -205,8 +205,7 @@ class SimplexMethod:
               f'z(x) = {z_line}\n'
               f'z(x) = {z_line_values}\n'
               f'z(x) = {simplex_table[-1][-1]}\n')
-        
-    
+
     @staticmethod
     def nice_header(num_var: int, symbol: str) -> List[str]:
         return [symbol + "_" + str(i) for i in range(num_var)]
