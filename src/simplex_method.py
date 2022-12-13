@@ -18,17 +18,24 @@ class SimplexMethod:
         simplex_table: Matrix = self.to_simplex_table()
         pivot_c_idx: Optional[int] = self.pivot_col_index(simplex_table[-1])
         if pivot_c_idx is None:
-            return self.get_result(simplex_table), simplex_table[-1][-1]
+            result = self.get_result(simplex_table)
+            self.print_nice_result(simplex_table, result)
+            return result, simplex_table[-1][-1]
         pivot_r_idx: Optional[int] = self.pivot_row_index(simplex_table, pivot_c_idx, 1)
         if pivot_r_idx is None:
-            return self.get_result(simplex_table), simplex_table[-1][-1]
+            result = self.get_result(simplex_table)
+            self.print_nice_result(simplex_table, result)
+            return result, simplex_table[-1][-1]
         while pivot_c_idx is not None and pivot_r_idx is not None:
+            self.get_result(simplex_table)
             simplex_table = self.pivot_gauss_jordan(simplex_table, pivot_r_idx, pivot_c_idx)
             pivot_c_idx = self.pivot_col_index(simplex_table[-1])
             if pivot_c_idx is None:
                 break
             pivot_r_idx = self.pivot_row_index(simplex_table, pivot_c_idx, 1)
-        return self.get_result(simplex_table), simplex_table[-1][-1]
+        result = self.get_result(simplex_table)
+        self.print_nice_result(simplex_table, result)
+        return result, simplex_table[-1][-1]
 
     def to_simplex_table(self) -> Matrix:
         """
@@ -70,10 +77,12 @@ class SimplexMethod:
         return m
     
     def first_phase(self, simplex_table: Matrix) -> Matrix:
+        self.get_result(simplex_table)
         pivot_c_idx: Optional[int] = self.pivot_col_index(simplex_table[-1])
         pivot_r_idx: Optional[int] = self.pivot_row_index(simplex_table, pivot_c_idx, 2)
         while pivot_c_idx is not None and pivot_r_idx is not None:
             simplex_table = self.pivot_gauss_jordan(simplex_table, pivot_r_idx, pivot_c_idx)
+            self.get_result(simplex_table)
             pivot_c_idx = self.pivot_col_index(simplex_table[-1])
             if pivot_c_idx is None:
                 if simplex_table[-1][-1] == 0 and not self.base_contains_artificial(simplex_table):
@@ -160,13 +169,13 @@ class SimplexMethod:
     def get_result(self, simplex_table: Matrix):
         result: Vector = Vector(*(0 for _ in range(simplex_table.m_dimension()[1] - 1)))
         simplex_table_cols: int = simplex_table.m_dimension()[1] - 1  # without last col (b col)
-        base_idx: List[int] = []
+        base_idx: List[int] = [0] * len(self.a)
         for idx in range(simplex_table_cols):
             idx_base: Optional[int] = self.is_base(simplex_table.get_col(idx))
             if idx_base is not None:
-                base_idx.append(idx)
+                base_idx[idx_base] = idx
                 result[idx] = simplex_table[idx_base][-1]
-        self.print_nice_result(simplex_table, base_idx, result)
+        self.print_nice_table(simplex_table, base_idx)
         return result
 
     @staticmethod
@@ -174,33 +183,40 @@ class SimplexMethod:
         if sum(col) == 1 and (x in (0, 1) for x in col):
             return [idx for idx in range(len(col) - 1) if col[idx] == 1][0]
 
-    def print_nice_result(self, simplex_table: Matrix, base_idx: List[int], result: Vector) -> None:
+    def print_nice_table(self, simplex_table: Matrix, base_idx: List[int]) -> None:
         # adding header
         x_header: List[str] = self.nice_header(self.a.m_dimension()[1] - self.p, 'x') 
         p_header: List[str] = self.nice_header(self.p, 'p')
-        table_header = x_header + p_header + ['b']
-        table = PrettyTable(table_header, title="SIMPLEX METHOD RESULT TABLE")
+        u_header: List[str] = self.nice_header(simplex_table.m_dimension()[1] - len(x_header) - len(p_header) - 1, 'u')  # -1 b
+        table_header = x_header + p_header + u_header + ['b']
+        table = PrettyTable(table_header, title="SIMPLEX METHOD TABLE")
 
         # adding data
         table.add_rows(simplex_table)
 
         # adding base col
-        base_col = self.nice_base(base_idx, table_header)
+        is_w: bool = len(u_header) > 0
+        base_col = self.nice_base(base_idx, table_header, is_w)
         fieldname: str = ''
         table._field_names.insert(0, fieldname)
         table._align[fieldname] = 'c'
         table._valign[fieldname] = 't'
         for i in range(len(base_col)): 
             table._rows[i].insert(0, base_col[i])
-        
+        print(table)
+        print()
+        return table_header
+    
+    def print_nice_result(self, simplex_table: Matrix, result: Vector) -> None:
+        x_header: List[str] = self.nice_header(self.a.m_dimension()[1] - self.p, 'x')
+        p_header: List[str] = self.nice_header(self.p, 'p')
+        table_header = x_header + p_header
         # format nice result
         z_line = [str(a) + ' * ' + str(x) for a, x in zip(-self.z, x_header)]
         z_line = ' + '.join(z_line)
         z_line_values = [str(a) + ' * ' + str(x) for a, x in zip(-self.z, result[:-self.p])]
         z_line_values = ' + '.join(z_line_values)
-        print(table)
-        print()
-        print(f'x = ({str(table_header[:-1])[1:-1]})\n'
+        print(f'x = ({str(table_header)[1:-1]})\n'
               f'x = ({str(list(result))[1:-1]}) => ({str(list(result[:-self.p]))[1:-1]})\n\n'
               f'z(x) = {z_line}\n'
               f'z(x) = {z_line_values}\n'
@@ -208,12 +224,14 @@ class SimplexMethod:
 
     @staticmethod
     def nice_header(num_var: int, symbol: str) -> List[str]:
-        return [symbol + "_" + str(i) for i in range(num_var)]
+        return [symbol + "_" + str(i) for i in range(1,num_var+1)]
 
     @staticmethod
-    def nice_base(base_idx: List[int], table_header: List[str]) -> PrettyTable:
+    def nice_base(base_idx: List[int], table_header: List[str], is_w: bool) -> PrettyTable:
         first_col: List[str] = []
         for i in base_idx:
             first_col.append(table_header[i])
         first_col.append('z(x)')
+        if is_w:
+            first_col.append('w(x)')
         return first_col
