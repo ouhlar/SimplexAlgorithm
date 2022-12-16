@@ -28,9 +28,13 @@ class RationalNumber:
             self._numerator, self._denominator = self._reduce(abs(numerator), abs(denominator), minus)
 
     def __str__(self) -> str:
+        if self.get_denominator() == 1:
+            return str(self._numerator)
         return "{}/{}".format(str(self._numerator), str(self._denominator))
 
     def __repr__(self) -> str:
+        if self.get_denominator() == 1:
+            return str(self._numerator)
         return "{}/{}".format(str(self._numerator), str(self._denominator))
 
     def _gcd(self, n: int, d: int) -> int:
