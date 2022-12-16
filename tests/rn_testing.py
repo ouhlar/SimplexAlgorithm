@@ -14,10 +14,10 @@ class TestRationalNumber(unittest.TestCase):
         self.assertEqual(str(RationalNumber(-5, -3)), "5/3")
 
     def test_zero_numerator(self):
-        self.assertEqual(str(RationalNumber(0, 150)), "0/1")
-        self.assertEqual(str(RationalNumber(-0, 150)), "0/1")
-        self.assertEqual(str(RationalNumber(0, -150)), "0/1")
-        self.assertEqual(str(RationalNumber(-0, -150)), "0/1")
+        self.assertEqual(str(RationalNumber(0, 150)), "0")
+        self.assertEqual(str(RationalNumber(-0, 150)), "0")
+        self.assertEqual(str(RationalNumber(0, -150)), "0")
+        self.assertEqual(str(RationalNumber(-0, -150)), "0")
 
     def test_zero_denominator(self):
         self.assertRaises(ZeroDivisionError, RationalNumber, 8, 0)
