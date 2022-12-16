@@ -9,23 +9,23 @@ V_NEG: Vector = Vector(RationalNumber(-1, 3), RationalNumber(-3, 2), RationalNum
 
 class TestVector(unittest.TestCase):
     def test_addition(self):
-        self.assertEqual(str(V_POS + V_POS), "[2/3  3/1  8/7]")
-        self.assertEqual(str(V_POS + V_NEG), "[0/1  0/1  0/1]")
-        self.assertEqual(str(V_NEG + V_POS), "[0/1  0/1  0/1]")
-        self.assertEqual(str(V_NEG + V_NEG), "[-2/3  -3/1  -8/7]")
+        self.assertEqual(str(V_POS + V_POS), "[2/3  3  8/7]")
+        self.assertEqual(str(V_POS + V_NEG), "[0  0  0]")
+        self.assertEqual(str(V_NEG + V_POS), "[0  0  0]")
+        self.assertEqual(str(V_NEG + V_NEG), "[-2/3  -3  -8/7]")
 
     def test_substraction(self):
-        self.assertEqual(str(V_POS - V_POS), "[0/1  0/1  0/1]")
-        self.assertEqual(str(V_POS - V_NEG), "[2/3  3/1  8/7]")
-        self.assertEqual(str(V_NEG - V_POS), "[-2/3  -3/1  -8/7]")
-        self.assertEqual(str(V_NEG - V_NEG), "[0/1  0/1  0/1]")
+        self.assertEqual(str(V_POS - V_POS), "[0  0  0]")
+        self.assertEqual(str(V_POS - V_NEG), "[2/3  3  8/7]")
+        self.assertEqual(str(V_NEG - V_POS), "[-2/3  -3  -8/7]")
+        self.assertEqual(str(V_NEG - V_NEG), "[0  0  0]")
 
     # Dot product
     def test_multiplication(self):
-        self.assertEqual(str(V_POS * 8), "[8/3  12/1  32/7]")
-        self.assertEqual(str(8 * V_POS), "[8/3  12/1  32/7]")
-        self.assertEqual(str(V_NEG * 8), "[-8/3  -12/1  -32/7]")
-        self.assertEqual(str(8 * V_NEG), "[-8/3  -12/1  -32/7]")
+        self.assertEqual(str(V_POS * 8), "[8/3  12  32/7]")
+        self.assertEqual(str(8 * V_POS), "[8/3  12  32/7]")
+        self.assertEqual(str(V_NEG * 8), "[-8/3  -12  -32/7]")
+        self.assertEqual(str(8 * V_NEG), "[-8/3  -12  -32/7]")
         self.assertEqual(str(V_POS * V_POS), "4741/1764")
         self.assertEqual(str(V_POS * V_NEG), "-4741/1764")
         self.assertEqual(str(V_NEG * V_POS), "-4741/1764")

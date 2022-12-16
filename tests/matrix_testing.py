@@ -38,24 +38,24 @@ class TestMatrix(unittest.TestCase):
         self.assertEqual(str(M1_POS[0][1]), "3/2")
 
     def test_addition(self):
-        self.assertEqual(str(M1_POS + M1_POS), "[[2/3  3/1  8/7]]")
+        self.assertEqual(str(M1_POS + M1_POS), "[[2/3  3  8/7]]")
         self.assertRaises(ValueError, Matrix.__add__, M1_POS, M2_POS)
-        self.assertEqual(str(M1_POS + M1_NEG), "[[0/1  0/1  0/1]]")
-        self.assertEqual(str(M1_NEG + M1_POS), "[[0/1  0/1  0/1]]")
-        self.assertEqual(str(M1_NEG + M1_NEG), "[[-2/3  -3/1  -8/7]]")
-        self.assertEqual(str(M2_POS + M2_POS), "[[2/3]\n [3/1]\n [8/7]]")
-        self.assertEqual(str(M2_POS + M2_NEG), "[[0/1]\n [0/1]\n [0/1]]")
-        self.assertEqual(str(M2_NEG + M2_NEG), "[[-2/3]\n [-3/1]\n [-8/7]]")
+        self.assertEqual(str(M1_POS + M1_NEG), "[[0  0  0]]")
+        self.assertEqual(str(M1_NEG + M1_POS), "[[0  0  0]]")
+        self.assertEqual(str(M1_NEG + M1_NEG), "[[-2/3  -3  -8/7]]")
+        self.assertEqual(str(M2_POS + M2_POS), "[[2/3]\n [3]\n [8/7]]")
+        self.assertEqual(str(M2_POS + M2_NEG), "[[0]\n [0]\n [0]]")
+        self.assertEqual(str(M2_NEG + M2_NEG), "[[-2/3]\n [-3]\n [-8/7]]")
 
     def test_substraction(self):
-        self.assertEqual(str(M1_POS - M1_POS), "[[0/1  0/1  0/1]]")
+        self.assertEqual(str(M1_POS - M1_POS), "[[0  0  0]]")
         self.assertRaises(ValueError, Matrix.__sub__, M1_POS, M2_POS)
-        self.assertEqual(str(M1_POS - M1_NEG), "[[2/3  3/1  8/7]]")
-        self.assertEqual(str(M1_NEG - M1_POS), "[[-2/3  -3/1  -8/7]]")
-        self.assertEqual(str(M1_NEG - M1_NEG), "[[0/1  0/1  0/1]]")
-        self.assertEqual(str(M2_POS - M2_POS), "[[0/1]\n [0/1]\n [0/1]]")
-        self.assertEqual(str(M2_POS - M2_NEG), "[[2/3]\n [3/1]\n [8/7]]")
-        self.assertEqual(str(M2_NEG - M2_NEG), "[[0/1]\n [0/1]\n [0/1]]")
+        self.assertEqual(str(M1_POS - M1_NEG), "[[2/3  3  8/7]]")
+        self.assertEqual(str(M1_NEG - M1_POS), "[[-2/3  -3  -8/7]]")
+        self.assertEqual(str(M1_NEG - M1_NEG), "[[0  0  0]]")
+        self.assertEqual(str(M2_POS - M2_POS), "[[0]\n [0]\n [0]]")
+        self.assertEqual(str(M2_POS - M2_NEG), "[[2/3]\n [3]\n [8/7]]")
+        self.assertEqual(str(M2_NEG - M2_NEG), "[[0]\n [0]\n [0]]")
 
     def test_multiplication(self):
         self.assertEqual(str(M1_POS * M2_POS), "[[4741/1764]]")
@@ -71,7 +71,7 @@ class TestMatrix(unittest.TestCase):
             Vector(RationalNumber(5, 1), RationalNumber(5, 2), RationalNumber(5, 3)),
             Vector(RationalNumber(7, 1), RationalNumber(7, 2), RationalNumber(7, 3))
         )
-        self.assertEqual(str(m.swap_rows(0, 1)), "[[5/1  5/2  5/3]\n [1/1  1/2  1/3]\n [7/1  7/2  7/3]]")
+        self.assertEqual(str(m.swap_rows(0, 1)), "[[5  5/2  5/3]\n [1  1/2  1/3]\n [7  7/2  7/3]]")
         self.assertRaises(ValueError, m.swap_rows, 0, 6)
 
     def test_swap_cols(self):
@@ -80,7 +80,7 @@ class TestMatrix(unittest.TestCase):
             Vector(RationalNumber(5, 1), RationalNumber(5, 2), RationalNumber(5, 3)),
             Vector(RationalNumber(7, 1), RationalNumber(7, 2), RationalNumber(7, 3))
         )
-        self.assertEqual(str(m.swap_cols(0, 1)), "[[1/2  1/1  1/3]\n [5/2  5/1  5/3]\n [7/2  7/1  7/3]]")
+        self.assertEqual(str(m.swap_cols(0, 1)), "[[1/2  1  1/3]\n [5/2  5  5/3]\n [7/2  7  7/3]]")
         self.assertRaises(ValueError, m.swap_rows, 0, 6)
 
     def test_gauss_jordan(self):
@@ -90,7 +90,7 @@ class TestMatrix(unittest.TestCase):
             Vector(RationalNumber(3, 1), RationalNumber(9, 1), RationalNumber(1, 1), RationalNumber(2, 1))
         )
         m.gauss_jordan()
-        self.assertEqual(str(m), "[[1/1  0/1  0/1  45/529]\n [0/1  1/1  0/1  77/529]\n [0/1  0/1  1/1  10/23]]")
+        self.assertEqual(str(m), "[[1  0  0  45/529]\n [0  1  0  77/529]\n [0  0  1  10/23]]")
 
     def test_json_matrix_load(self):
         m = Matrix.from_json_file('./tests/test_data/sample.json')
