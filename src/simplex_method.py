@@ -1,5 +1,6 @@
 from typing import Optional, Tuple, List
 from prettytable import PrettyTable
+import json
 
 from matrix import Matrix
 from rational_number import RationalNumber
@@ -7,24 +8,37 @@ from vector import Vector
 
 
 class SimplexMethod:
-    def __init__(self, a_matrix: Matrix, b_vector: Vector, z_vector: Vector, p_number: int) -> None:
+    def __init__(self, filename) -> None:
+        with open(filename) as json_file:
+            data = json.load(json_file)
+            matrix_data = []
+            for row in data["matrix"]:
+                matrix_data.append(Vector(*(RationalNumber(x) for x in row)))
+            a_matrix = Matrix(*matrix_data)
+            b_vector = Vector(*(RationalNumber(x) for x in data["b"]))
+            z_vector = Vector(*(RationalNumber(x) for x in data["z"]))
+            p_number = data["p"]
         self.a: Matrix = a_matrix
         self.b: Vector = b_vector + RationalNumber(0)
         self.z: Vector = Vector(*z_vector, *(p_number * [RationalNumber(0)])) * (-1)
         self.p: int = p_number
         self.u: int = 0
+        self.print_result: bool = False
 
-    def run_simplex_method(self) -> Tuple[Vector, RationalNumber]:
+    def run_simplex_method(self, print_result: bool = False) -> Tuple[Vector, RationalNumber]:
+        self.print_result = print_result
         simplex_table: Matrix = self.to_simplex_table()
         pivot_c_idx: Optional[int] = self.pivot_col_index(simplex_table[-1])
         if pivot_c_idx is None:
             result = self.get_result(simplex_table)
-            self.print_nice_result(simplex_table, result)
+            if self.print_result:
+                self.print_nice_result(simplex_table, result)
             return result, simplex_table[-1][-1]
         pivot_r_idx: Optional[int] = self.pivot_row_index(simplex_table, pivot_c_idx, 1)
         if pivot_r_idx is None:
             result = self.get_result(simplex_table)
-            self.print_nice_result(simplex_table, result)
+            if self.print_result:
+                self.print_nice_result(simplex_table, result)
             return result, simplex_table[-1][-1]
         while pivot_c_idx is not None and pivot_r_idx is not None:
             self.get_result(simplex_table)
@@ -34,7 +48,8 @@ class SimplexMethod:
                 break
             pivot_r_idx = self.pivot_row_index(simplex_table, pivot_c_idx, 1)
         result = self.get_result(simplex_table)
-        self.print_nice_result(simplex_table, result)
+        if print_result:
+            self.print_nice_result(simplex_table, result)
         return result, simplex_table[-1][-1]
 
     def to_simplex_table(self) -> Matrix:
@@ -175,7 +190,8 @@ class SimplexMethod:
             if idx_base is not None:
                 base_idx[idx_base] = idx
                 result[idx] = simplex_table[idx_base][-1]
-        self.print_nice_table(simplex_table, base_idx)
+        if self.print_result:
+            self.print_nice_table(simplex_table, base_idx)
         return result
 
     @staticmethod
@@ -187,7 +203,8 @@ class SimplexMethod:
         # adding header
         x_header: List[str] = self.nice_header(self.a.m_dimension()[1] - self.p, 'x') 
         p_header: List[str] = self.nice_header(self.p, 'p')
-        u_header: List[str] = self.nice_header(simplex_table.m_dimension()[1] - len(x_header) - len(p_header) - 1, 'u')  # -1 b
+        u_header: List[str] = self.nice_header(simplex_table.m_dimension()[1] - len(x_header) - len(p_header) - 1,
+                                               'u')  # -1 b
         table_header = x_header + p_header + u_header + ['b']
         table = PrettyTable(table_header, title="SIMPLEX METHOD TABLE")
 
@@ -205,7 +222,6 @@ class SimplexMethod:
             table._rows[i].insert(0, base_col[i])
         print(table)
         print()
-        return table_header
     
     def print_nice_result(self, simplex_table: Matrix, result: Vector) -> None:
         x_header: List[str] = self.nice_header(self.a.m_dimension()[1] - self.p, 'x')
@@ -224,7 +240,7 @@ class SimplexMethod:
 
     @staticmethod
     def nice_header(num_var: int, symbol: str) -> List[str]:
-        return [symbol + "_" + str(i) for i in range(1,num_var+1)]
+        return [symbol + "_" + str(i) for i in range(1, num_var+1)]
 
     @staticmethod
     def nice_base(base_idx: List[int], table_header: List[str], is_w: bool) -> PrettyTable:
